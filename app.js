@@ -3,6 +3,7 @@ const express = require ('express');
 
 // Require de FS
 const fs = require ('fs');
+const { send } = require('process');
 
 // Ejecución de Express
 const app = express ();
@@ -56,39 +57,32 @@ app.get("/heroes/detalle/:id", (req, res) => {
 
 
 // Ruta /heroes/n/bio ➝ se envía la bio del héroe solicitado
-//app.get('/heroes/:n/bio', (req, res) => {
-  //  let elId = req.params.n
-	//let thisHeroe = heroes.find( thisHeroe => thisHeroe.id === elId)
+app.get('/heroes/:n/bio/:ok?', (req, res) => {
+   let id = req.params.n
+   let ok = req.params.ok
+    let thisHeroe = heroes.find (thisHeroe => thisHeroe.id == id)
 
-//if thisHeroe {
+        if (!thisHeroe){
+            return res.send('No se encontro el heroe')
+         }
+        else if(thisHeroe && ok != 'ok'){
+           return res.send('Soy '+ thisHeroe.nombre +' que lastima que no quieras saber mas de mi')
+        }else if (thisHeroe && ok == 'ok'){
+            return res.send(thisHeroe.resenia)
+    }
+}
+);
 
-//}else {
-    
-//}
-
-	// Si NO se encuentra al héroe se envía un mensaje
-	// Si se encuentra al héroe:
-		// Se pregunta si vino el parámetro Y el valor esperado y se envía la información
-		// Si nó vino el parámetro se envía el mensaje de error
-//	}
-//});
 
 // Ruta Créditos
-app.get('/creditos', function (req, res){
+app.get('/creditos', function(req, res){
     res.send('Martina Garavento')
 })
+
+
 
 // Ruta... ¿Pára qué sirve esto?
 app.get('*', (req, res) => { // el * significa wildcard sino el req no matchea con ninguna ruta 
     //que asignamos nos va a tomar este respuesta 
-	res.status(404).send('404 not found. <br> ¡Houston, poseemos problemas!');
-});
-
-
-
-//prettier
-//atom keymap
-//bracket pais Colorizer
-//ESlint
-//gitlens
-//material icontheme
+    res.status(404).send('404 not found. <br> ¡Houston, poseemos problemas!')});
+    
